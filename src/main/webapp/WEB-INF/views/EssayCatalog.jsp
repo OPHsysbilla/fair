@@ -3,6 +3,7 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String imgPath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/img";
 %>
 <%-- <%=path %>/ --%>
 
@@ -30,9 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  var div2log=document.getElementById("nav_log2");  
 			  var div3unlog=document.getElementById("nav_unlog1");  
 			  var div4unlog=document.getElementById("nav_unlog2");  
-
 			  var sbtitle ='<%=session.getAttribute("sessionuser")%>';
-			  alert(sbtitle);
 			  if(sbtitle=="null"){ 
 				  	div1log.style.display='none';
 				  	div2log.style.display='none';
@@ -282,9 +281,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			      </ul>
 
 			      <!-- 搜索 表单 -->
-			      <form class="navbar-form navbar-right" action="#">
+			      <form class="navbar-form navbar-right" action="<%=path%>/searchget" method="GET">
 			        <div class="form-group">
-			          <input type="text" class="form-control" placeholder="Search">
+			          <input type="text" class="form-control" placeholder="请输入搜索内容" name="searchstr">
 			        </div>
 			        <button type="submit" class="btn btn-info">搜索</button>
 			      </form>
@@ -294,6 +293,72 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</nav>
     	</div>
     </div>
+
+    <!-- Modal 弹出注册框 -->
+	<div class="modal fade" id="myModal_regist" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title modal-title-info" id="myModalLabel">注册</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal" action="<%=path %>/account/registerpost" method="post">
+			  <fieldset>
+			    <div class="form-group">
+			      <label for="inputEmail" class="col-lg-2 control-label">用户名</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" name="registername" id="inputUsername" placeholder="用户名">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <label for="inputPassword" class="col-lg-2 control-label">密码</label>
+			      <div class="col-lg-10">
+			        <input type="password" class="form-control" name="registerpwd" id="inputPassword" placeholder="密码">
+			      </div>
+			    </div>
+			    <div class="form-group_regist">
+			    	<button class="btn btn-info">注册</button>
+			    </div>
+			  </fieldset>
+			</form>
+	      </div>
+	  </div>
+	</div>
+	</div>
+
+	    <!-- Modal 弹出登录框 -->
+	<div class="modal fade" id="myModal_login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title modal-title-info" id="myModalLabel">登录</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal" action="<%=path%>/account/login" method="post" >
+			  <fieldset>
+			    <div class="form-group">
+			      <label for="inputEmail" class="col-lg-2 control-label">用户名</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" name="username" id="inputUsername" placeholder="用户">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <label for="inputPassword" class="col-lg-2 control-label">密码</label>
+			      <div class="col-lg-10">
+			        <input type="password" class="form-control" name="password" id="inputPassword" placeholder="密码">
+			      </div>
+			    </div>
+			    <div class="form-group_login">
+			    	<button class="btn btn-info" type="submit">登录</button>
+			    </div>
+			  </fieldset>
+			</form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
     <div class="mainbody">
     	
@@ -310,6 +375,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 			<!-- 功能区 -->
 			<div class="user_bloglist">
+				<c:if test="${empty alluserblog}">
+				<div class="container-fluid">
+				  <div class="row">
+				  	 <div class="col-xs-12 col-md-8">
+				  	 	<h5>没有博文</h5>
+					</div>
+				    
+				  </div>
+				</div>
+					
+				</c:if>
 				<c:forEach items="${alluserblog}" var="blog" varStatus="loop"> 
 		 			<a  href="<%=path %>/blog/${blog.userId}/${blog.id}" >
 						<dl class="blog_list_dl">
@@ -332,14 +408,56 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div> 
 			
 			<div class="page_divide">
-				<ul class="pagination">
-				  <li class="disabled"><a href="#">&laquo;</a></li>
-				  <li class="active"><a href="#">1</a></li>
-				  <li><a href="#">2</a></li>
-				  <li><a href="#">3</a></li>
-				  <li><a href="#">4</a></li>
-				  <li><a href="#">5</a></li>
-				  <li><a href="#">&raquo;</a></li>
+				<ul class="pagination">   
+		        <c:choose>
+	               <c:when test="${curpage==1}">
+	                  <li class='disabled'><a href='#'>&laquo;</a></li>
+	               </c:when>
+	               <c:otherwise>
+	                   <li class='active'><a href='?curpage=${curpage-1}&userid=${userid}'>&laquo;</a></li>
+	                   <c:if test="${sumpage gt 6 }">
+				       		<li class='disabled'><a href='#'>…</a></li>
+			       		</c:if>
+	               </c:otherwise>
+	            </c:choose>
+	            <c:forEach varStatus="i" begin="1" end="${sumpage}">
+	                 <c:choose>
+	                    <c:when test="${curpage==i.count}">
+	                       <li class='disabled'><a href='#'>${i.count}</a></li>
+	                    </c:when>
+	                    <c:otherwise>
+	                        <li  class='active'><a href='?curpage=${i.count}&userid=${userid}'>${i.count}</a></li>
+	                    </c:otherwise>
+	                 </c:choose>
+	            </c:forEach>
+		        <c:choose>
+	               <c:when test="${curpage==sumpage}">
+	                  <li class='disabled'><a href='#'>&raquo;</a></li>
+	               </c:when>
+	               <c:otherwise>
+			       		<c:if test="${sumpage gt 6 }">
+				       		<li class='disabled'><a href='#'>…</a></li>
+			       		</c:if>
+			            <li>
+				            <c:if test="${not empty alluserblog}">
+				            	<a href='?curpage=${curpage+1}&userid=${userid}'>&raquo;</a>
+				            </c:if>
+				            <c:if test="${empty alluserblog}">
+				            	<a href='#'>&raquo;</a>
+				            </c:if>
+			            </li> 
+	               </c:otherwise>
+	            </c:choose>
+		            
+					<%-- <li class="disabled"><a href="#">&laquo;</a></li> 
+					<c:forEach items="${cur}" var="blog" varStatus="loop">
+					    <li><a href="<%=path%>/search?curpage=${curpage}">5</a></li>
+					</c:forEach>	
+				    <li class="active"><a href="#" >${curpage+1}</a></li>
+				    <c:forEach items="${cur}" var="blog" varStatus="loop">
+						 <li><a href="#">2</a></li> 
+					</c:forEach>
+					<li><a href="#">&raquo;</a></li> --%>
 				</ul>
 			</div>
 
@@ -378,72 +496,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <p class="pull-right"><a href="#top">回到顶部</a></p>
     <p> Copyright © 2017</p>
     </div>
-
-    <!-- Modal 弹出注册框 -->
-	<div class="modal fade" id="myModal_regist" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title modal-title-info" id="myModalLabel">注册</h4>
-	      </div>
-	      <div class="modal-body">
-	        <form class="form-horizontal">
-			  <fieldset>
-			    <div class="form-group">
-			      <label for="inputEmail" class="col-lg-2 control-label">用户名</label>
-			      <div class="col-lg-10">
-			        <input type="text" class="form-control" id="inputUsername" placeholder="username">
-			      </div>
-			    </div>
-			    <div class="form-group">
-			      <label for="inputPassword" class="col-lg-2 control-label">密码</label>
-			      <div class="col-lg-10">
-			        <input type="text" class="form-control" id="inputPassword" placeholder="password">
-			      </div>
-			    </div>
-			    <div class="form-group_regist">
-			    	<button class="btn btn-info">注册</button>
-			    </div>
-			  </fieldset>
-			</form>
-	      </div>
-	  </div>
-	</div>
-	</div>
-
-	    <!-- Modal 弹出登录框 -->
-	<div class="modal fade" id="myModal_login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title modal-title-info" id="myModalLabel">登录</h4>
-	      </div>
-	      <div class="modal-body">
-	        <form class="form-horizontal" action="<%=path%>/account/login" method="post" >
-			  <fieldset>
-			    <div class="form-group">
-			      <label for="inputEmail" class="col-lg-2 control-label">用户名</label>
-			      <div class="col-lg-10">
-			        <input type="text" class="form-control" name="username" id="inputUsername" placeholder="用户">
-			      </div>
-			    </div>
-			    <div class="form-group">
-			      <label for="inputPassword" class="col-lg-2 control-label">密码</label>
-			      <div class="col-lg-10">
-			        <input type="text" class="form-control" name="password" id="inputPassword" placeholder="密码">
-			      </div>
-			    </div>
-			    <div class="form-group_login">
-			    	<button class="btn btn-info" type="submit">登录</button>
-			    </div>
-			  </fieldset>
-			</form>
-	      </div>
-	    </div>
-	  </div>
-	</div>
 
   </body>
 </html>

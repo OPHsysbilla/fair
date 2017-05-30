@@ -190,7 +190,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="mainbody">
     	<!-- 编辑模块 -->
 		<div class="editor_block">
-			<form action="<%=path %>/blog/${userid}/newessaypost" method="POST">
+			<form action="<%=path %>/blog/${userid}/${essayid}/edit" method="POST">
 	    		<!-- 标题 -->
 	    		<div class="title_input">
 	    				<h4>标题：</h4>
@@ -211,7 +211,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								    <h4>编写内容：</h4>
 								    <script id="editor" type="text/plain"  style="width:100%;height:640px;">
     								</script>
-				    				<textarea id="context" value="${ essayContent }"   name="context" style="display: none"></textarea>
+				    				<textarea id="context"  name="context" style="display: none"></textarea>
 				    				<div style="margin-top:10px;">
 								    <input type="submit" class="btn btn-info" value="确认提交" onclick="getContent();">
 								 	</div>
@@ -328,8 +328,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    //实例化编辑器
 		    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
 		    var ue = UE.getEditor('editor');
-			
-		
+		    
+		    window.onload = function(){
+		    	UE.getEditor('editor').addListener("ready", function () {
+			    	// editor准备好之后才可以使用
+			    	UE.getEditor('editor').setContent('${essayContent}');
+			    	}); 
+		    }  
 		    function getContent() {
 		        var arr = [];
 		        arr.push(UE.getEditor('editor').getContent());       

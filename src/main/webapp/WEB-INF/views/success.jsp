@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'success.jsp' starting page</title>
+    <title>上传文件</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -22,23 +22,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
   </head>
-  
-  <body>
-    上传成功 <br>
+  <body> 
+  	<c:forEach items="${paths}" var="path" varStatus="loop"> 
+    	 <br>
+   		<a href= "<%=path%>/download?filePath=${path}" >${pathnames[loop.count-1]}</a>
+     </c:forEach> 
+     <br>
+     <a href= "<%=path%>/uploadfile/${userid}" >上传文件</a>
+  </body>
+</html>
 <%--      <c:forEach items="${paths}" var="path" varStatus="loop"> 
      	 <br>
    		<a href= "/fair/download?filePath=${path}"  >${fn:substringAfter(path,'/')}</a>
      </c:forEach> --%>
  
-  	<c:forEach items="${paths}" var="path" varStatus="loop"> 
-     	 <br>
-   		<a href= "/fair/download?filePath=${path}" >${ path }</a>
-     </c:forEach> 
-
-  </body>
-</html>
 	<%-- <%
   	String[] paths = (String[])request.getAttribute("paths");
   	for(int i = 0; i < paths.length; i++)

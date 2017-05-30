@@ -1,7 +1,6 @@
 package bean;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
 import java.sql.ResultSet;
@@ -17,6 +16,19 @@ public class User{
 	private String password;
 	private int authority;
 	private final static String HEADPORTRAITFILENAME = "head_portrait.png";
+	private String absolutelyHeadPortraitPath;
+	private String relativeHeadPortraitPath;
+	
+	
+	public void setAbsolutelyHeadPortraitPath(String absolutelyHeadPortraitPath) {
+		this.absolutelyHeadPortraitPath = absolutelyHeadPortraitPath;
+	}
+	
+	
+	public void setRelativeHeadPortraitPath(String relativeHeadPortraitPath) {
+		this.relativeHeadPortraitPath = relativeHeadPortraitPath;
+	}
+	
 	
 	public User()
 	{
@@ -36,6 +48,8 @@ public class User{
 				user.setUsername(resultSet.getString(2));
 				user.setPassword(resultSet.getString(3));
 				user.setAuthority(resultSet.getInt(4));
+				user.absolutelyHeadPortraitPath = user.getAbsolutelyHeadPortraitPath();
+				user.relativeHeadPortraitPath = user.getRelativeHeadPortraitPath();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -57,6 +71,8 @@ public class User{
 				user.setUsername(resultSet.getString(2));
 				user.setPassword(resultSet.getString(3));
 				user.setAuthority(resultSet.getInt(4));
+				user.absolutelyHeadPortraitPath = user.getAbsolutelyHeadPortraitPath();
+				user.relativeHeadPortraitPath = user.getRelativeHeadPortraitPath();
 				users.add(user);
 			}
 		} catch (SQLException e) {
@@ -78,6 +94,8 @@ public class User{
 				user.setUsername(resultSet.getString(2));
 				user.setPassword(resultSet.getString(3));
 				user.setAuthority(resultSet.getInt(4));
+				user.absolutelyHeadPortraitPath = user.getAbsolutelyHeadPortraitPath();
+				user.relativeHeadPortraitPath = user.getRelativeHeadPortraitPath();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -100,6 +118,11 @@ public class User{
 				+ user.getUsername() + "','" 
 				+ user.getPassword() + "','"
 				+ 0 + "')";
+		boolean result = DBQueryHelper.executeUpdate(sqlInsert);
+		if(!result)
+		{
+			return result;
+		}
 		File mainPath = new File(MyEnviroment.USERSPATH + user.getUsername());
 		mainPath.mkdir();
 		File filesPath = new File(MyEnviroment.USERSPATH + user.getUsername() + "/files");
@@ -109,7 +132,7 @@ public class User{
 			try {
 				RandomAccessFile originalRaf = new RandomAccessFile(MyEnviroment.ROOTPATH
 						 + "default_headportrait.png", "r");
-				FileOutputStream targetFos = new FileOutputStream(user.getHeadPortraitPath(), false);
+				FileOutputStream targetFos = new FileOutputStream(user.getAbsolutelyHeadPortraitPath(), false);
 				int size = 0;
 				byte[] buffer = new byte[1048576];
 				while( (size = originalRaf.read(buffer, 0, 1048576)) != -1)
@@ -122,7 +145,7 @@ public class User{
 				e.printStackTrace();
 			}
 		}
-		return DBQueryHelper.executeUpdate(sqlInsert);
+		return result;
 	}
 	
 	
@@ -178,10 +201,19 @@ public class User{
 	}
 	
 	
-	public String getHeadPortraitPath()
+	public String getRelativeHeadPortraitPath()
+	{
+		//return this.getMainDirPath() + "/" + HEADPORTRAITFILENAME;
+		return "/users/" + this.username + "/" + "head_portrait.png";
+	}
+	
+	
+	public String getAbsolutelyHeadPortraitPath()
 	{
 		return this.getMainDirPath() + "/" + HEADPORTRAITFILENAME;
 	}
+	
+	
 	
 	
 	public String getFilesDir()

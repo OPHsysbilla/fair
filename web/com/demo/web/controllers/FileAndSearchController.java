@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.demo.web.auth.AuthPassport;
+
 import bean.Blog;
 import bean.User;
 import operation.Search;
@@ -118,6 +120,7 @@ public class FileAndSearchController {
 		
 		return "upload_file";
 	}
+	@AuthPassport
 	@RequestMapping(value="/file/{userid}", method = RequestMethod.GET)
 	public String fileShow(Model model,@PathVariable("userid")Integer userid) {
 		User user = User.getUserByID(userid);

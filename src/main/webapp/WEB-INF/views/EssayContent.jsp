@@ -1,10 +1,12 @@
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.io.BufferedReader"%>
 <%@page import="java.io.FileInputStream"%>
+<%@page import="bean.User"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%
 String path = request.getContextPath();
+String imgPath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/img";
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -91,6 +93,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.form-group_login{
 			width: 30px;
 			margin-right:10px; 
+			margin-top:10px;
 		}
 		.personal_Essay{
 			width: 100%;
@@ -100,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		.personal_body{
 			width: 30%;
-			height: 200px;
+			height: 215px;
 			background-color: #fff;
 			float: left;
 		    overflow: hidden;
@@ -118,7 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		.Essay_title{
 			width: 100%;
-			height: 100px;
+			margin-bottom: 100px;
 			background-color: #fff;
 			text-align: center;
 		}
@@ -130,6 +133,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.Essay_container{
 			width: 100%;
 			background-color: #fff;
+			padding:5%;
 		}
 		.comment_body{
 			width: 69%;
@@ -137,7 +141,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			background-color: #fff;
 			float: right;
 			overflow:hidden;
-
+			padding-top:2%;
+			padding-left:2%;
+			padding-bottom:2%;
 		}
 		.comment_person{
 			width: 69%;
@@ -152,8 +158,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			background-color: #fff;
 			overflow: hidden;
 			float: left;
+			text-align:center;
 		}
 		.comment_person_text{
+			padding:10px;
 			height: 100%;
 			width: 90%;
 			float: right;
@@ -165,13 +173,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.comment_body_title{
 			border-bottom: 0.5px solid;
 			border-color:#DEDEDE;
-
 		}
 		dt{
 			float: left;
 			padding-right:20px;
 			padding-left:20px;
-			width: 12%;
+			width: 18%;
 			height: 60%;
 			border-right: 0.5px solid;
 			border-color:#DEDEDE;
@@ -179,14 +186,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		dd{
 			padding-left: 20px;
 			padding-right: 20px;
+			width:82%;
+			height:100%;
 			float: left;
 			overflow: hidden;
 			border-color:#DEDEDE ;
+			
 		}
 		dl{
 			overflow: hidden;
 			padding-top: 20px;
 			padding-bottom: 20px;
+			position:relative;
 
 		}
 		.blog_list_dl{
@@ -194,16 +205,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			border-color:#DEDEDE; 
 		}
 		.comment_person_title{
-			border-bottom: 0.5px solid;
-			border-color:#DEDEDE;
+			border-bottom: 0.5px solid; 
+			border-color:#DEDEDE; 
+			padding-left:2%;
+			padding-top:2%;
+			padding-bottom:2%;
+			margin-bottom:2%;
 		}
 
 		.dl_dd_abstracts{
-
+			
 			 
+		}
+		.dl_dd_time{
+			position:absolute;
+			font-color:#999999;
+			right:5%;
+			bottom:5%;
 		}
 		.dl_dd_label{
 			padding-top: 20px;
+			padding-left:20px;
+			overflow: hidden;
+			float:left;
+			
 		}
 		h3{
 			margin-top:0px;
@@ -228,9 +253,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		.blog_list_headimg{
 			
-			margin:10% auto;
-			width: 70px;
-			height:70px;
+			margin:5% auto;
+			width: 50px;
+			height:50px;
 			padding-bottom: 10%;
 			text-align: center;
 			vertical-align: center;
@@ -268,13 +293,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			margin-bottom: 10px;
 			overflow: hidden;
 			border-bottom: 0.5px solid;
-			border-color:#DEDEDE;
+			border-color:#FFF;
 		}
 
 		.blog_person_head{
 			width: 100%;
 			height: 50%;
-			padding-bottom: 10%;
+			padding-top: 10%;
 			text-align: center;
 		}
 
@@ -284,7 +309,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 
 		.blog_person_headimg{
-			margin-top: 10px;
+			margin-top: 35px;
 			width: 120px;
 			height:120px;
 			text-align: center;
@@ -293,6 +318,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		.blog_person_headname{
 			padding-top: 20px;
+			margin-bottom: 20px;
 			display:block;
 			float:left;
 			overflow: hidden;
@@ -301,10 +327,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		}
 
-
+		.Essay_title_manager{
+			overflow: hidden;
+			float: right;
+			padding-right: 5%;
+		}
+		.comment_person_button{
+			margin:10px;
+		}
 
 
 	</style>
+	 
+		<script type="text/javascript">
+		
+		window.onload=function(){  
+			  var div1=document.getElementById("Essay_manager");   
+
+			  var usersession='${sessionuser.username}';
+
+			  var sbtitle ='${essayauthor.username}';
+
+			  if(sbtitle==usersession){
+			  	div1.style.display='block';
+			  }else{
+			  	div1.style.display='none';
+			  }
+		};
+	</script>
+	
+	
 
   </head>
   <body>
@@ -383,13 +435,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 个人信息 -->
 				<div class="personal_body">
 					<div class="blog_person_headdiv">
-						<a href="" class="blog_person_head">
-							<img src="" class="blog_person_headimg">	
+						<a href="<%=path %>/blog/${essayauthor.id}" class="blog_person_head">
+							<img src="<%=imgPath %>${essayauthor.relativeHeadPortraitPath}" class="blog_person_headimg">	
 						</a>
 					</div>	
-					<a href="" class="blog_person_headname">
-						用户名		
+					<div style="padding:0px;">
+					<a href="<%=path %>/blog/${essayauthor.id}" class="blog_person_headname">
+						<!-- 作者名 -->		 
+						${ essayauthor.username }
 					</a>
+					</div>
 				</div>
 			</div>
 
@@ -398,6 +453,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 标题 -->
 				<div class="Essay_title">
 					<h1>${essay.title}</h1>
+					<div id="Essay_manager" name="Essay_manager" class="Essay_title_manager">
+						<a class="btn btn-danger btn-sm" href="<%=path %>/blog/${userid}/${essayid}/edit" >编辑文章</button>
+						<a class="btn btn-danger btn-sm" href="<%=path %>/blog/${userid}/${essayid}/delete" >删除文章</a>
+					</div>
 				</div>
 				<div class="xian" style="width:100%;margin:0 auto;padding:0 200px; border-top:1px solid #ddd" ></div>
 				<!-- 标签 -->
@@ -428,20 +487,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<dt>
 								<div class="blog_list_headdiv">
 									<a href="" class="blog_list_head">
-										<img src="images/001.jpg" class="blog_list_headimg">	
+										<img src="<%=imgPath %>${essayCommentUser[loop.count-1].relativeHeadPortraitPath}" class="blog_list_headimg">	
 									</a>
 								</div>	
 								<a href="" class="blog_list_headname">
-									${essayCommentUser[loop.count-1].username}--${comment.time}	
+									${essayCommentUser[loop.count-1].username}
 								</a>
 							</dt>
 							<dd>
-								<div class="dl_dd_abstracts">
-									<font class="dl_font">${comment.content}</font>
-								</div>
-							</dd>						
+								
+									<div class="dl_dd_abstracts">
+										<font class="dl_font">${comment.content}</font>
+									</div>
+							</dd>	
+							<div class="dl_dd_time">
+										${comment.time}	
+									</div>					
 						</dl>
 					</c:forEach> 
+					<!-- 
+					
 					<div class="dl_dd_secondcomment">
 						<dl class="blog_list_dl">
 							<dt>
@@ -455,22 +520,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>			
 							</dd>
 						</dl>
-					</div>
+					</div> 
+					
+					-->
 				</div>
    
 			</div>
 			<!-- 个人评论区域 -->
 			<div class="comment_person">
 				<div class="comment_person_title">
-					用户评论
+					用户评论 
 				</div>
 				<div class="comment_person_name">
-					<h4>用户：${sessionuser.username}</h4>
-				</div>
+					<p>${sessionuser.username}</p>
+				</div>  
 				<div class="comment_person_text"> 
 					<form action="<%=path %>/blog/${userid}/${essayid}?method=addComment" method="post">
 						<textarea class="form-control" name="comment" rows="3"></textarea>
+						<div class="comment_person_button">
 						<button class="btn btn-info" aligin="right">提交</button>
+						</div>
+						
 					</form>
 				</div>
 			</div>
@@ -562,7 +632,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			      </div>
 			    </div>
 			    <div class="form-group_login">
-			    	<button class="btn btn-info">登陆</button>
+			    	<button class="btn btn-info">登录</button>
 			    </div>
 			  </fieldset>
 			</form>

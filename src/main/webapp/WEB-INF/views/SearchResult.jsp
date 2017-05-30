@@ -2,6 +2,7 @@
     pageEncoding="utf-8"%>
 <%
 String path = request.getContextPath();
+String imgPath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/img";
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -228,9 +229,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<dt>
 						<h3>${blog.title}</h3>
 					</dt>
-					<dd>
+					<!-- <dd>
 						作者
-					</dd>
+					</dd> -->
 					<dd>
 						<div class="dl_dd_abstracts">
 							<font class="dl_font">${blog.abstracts}</font>
@@ -288,7 +289,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                </c:when>
                <c:otherwise>
                    <li class='active'><a href='?curpage=${curpage-1}&searchstr=${searchstr}'>&laquo;</a></li>
-                   <li class='active'><a href='#'>…</a></li>
+                   <c:if test="${sumpage gt 6 }">
+			            <li class='disabled'><a href='#'>…</a></li>       
+			       </c:if>
                </c:otherwise>
             </c:choose>
             <c:forEach varStatus="i" begin="1" end="${sumpage}">
@@ -306,8 +309,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   <li class='disabled'><a href='#'>&raquo;</a></li>
                </c:when>
                <c:otherwise>
-		       		<li class='active'><a href='#'>…</a></li>
-		            <li><a href='?curpage=${curpage+1}&searchstr=${searchstr}'>&raquo;</a></li> 
+	                <c:if test="${sumpage gt 6 }">
+			       		<li class='disabled'><a href='#'>…</a></li>
+		       		</c:if>
+		       		 <li>
+				            <c:if test="${not empty blogsByTitle}">
+				            	<a href='?curpage=${curpage+1}&searchstr=${searchstr}'>&raquo;</a>
+				            </c:if>
+				            <c:if test="${empty blogsByTitle}">
+				            	<a href='#'>&raquo;</a>
+				            </c:if>
+		            </li>  
                </c:otherwise>
             </c:choose>
 	            

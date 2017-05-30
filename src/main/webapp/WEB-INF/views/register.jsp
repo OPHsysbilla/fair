@@ -46,10 +46,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<input type="hidden" name="_xsrf" value="98af7cbfcfa2d52ee567cd5b0d1d2ed4"/>
 		<div class="group-inputs">
 			<div class="name input-wrapper">
-				<input required type="text" name="fullname" aria-label="用户名" placeholder="用户名">
+				<input required="required" type="text" name="fullname" aria-label="用户名" placeholder="用户名" value="${registername}">
 			</div>
 			<div class="input-wrapper">
-			<input required type="password" name="password" aria-label="密码" placeholder="密码（不少于 6 位）" autocomplete="off">
+			<input required="required" type="password" name="password" aria-label="密码" placeholder="密码（不少于 6 位）" autocomplete="off"  ">
 			</div>
 			<div class="input-wrapper captcha-module" data-type="en" >
 			</div>
@@ -57,6 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="button-wrapper command">
 	<button class="sign-button submit" type="submit">注册</button>
 	</div>
+	<div>${ error }</div>
 </form>
 
 </div>
