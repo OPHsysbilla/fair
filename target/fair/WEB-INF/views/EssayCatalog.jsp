@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+    pageEncoding="utf-8"  import="bean.Blog,bean.User"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<%-- <%=path %>/ --%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
@@ -11,7 +14,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>EssayCatalog</title>
+    <title>Homepage</title>
 
     <!-- Bootstrap -->
 
@@ -20,8 +23,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-	<!-- <script src="dist/js/bootstrap.min.js"></script> -->
-	 <script src="<%=path %>/dist/js/bootstrap.min.js"></script>
+	<script src="<%=path %>/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		window.onload=function(){  
+			  var div1=document.getElementById("nav_log1");  
+			  var div2=document.getElementById("nav_log2");  
+			  var div3=document.getElementById("nav_unlog1");  
+			  var div4=document.getElementById("nav_unlog2");  
+
+			  var sbtitle ='<%=session.getAttribute("sessionuser")%>';
+			  
+			  alert(sbtitle);
+			  
+			  if(sbtitle){
+				  	div1.style.display='block';
+				  	div2.style.display='block';
+				  	div3.style.display='none';
+				  	div4.style.display='none';
+				  	
+				  }
+				if(!sbtitle){
+					div3.style.display='block';
+				  	div4.style.display='block';
+				  	div1.style.display='none';
+				  	div2.style.display='none';
+				  }
+		};
+	</script>
 	<style type="text/css">
 		body{
 			padding-top:50px;
@@ -54,20 +82,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			background: white; 
 			margin-bottom:20px;
 		}
-		.container_body{
-			width:50%;
-			height:100%;
+		.main_blog_body{
+			width:65%;
+
 			padding-top:10px;
 			margin-top:10px; 
 			margin-left: 15%;
-			background-color: #fff; 
+			
 		}
 		.footer_bottm{
-			margin-top:20px;
 			height:50px;
 			background-color: #fff;
-			padding-left: 10%;
-			padding-right: 10%;
+			bottom: 0;
+			width: 100%;
+		    overflow: hidden;
+		    padding-left: 10%;
+		    padding-right: 10%;
+		    border-top: 1px solid #f0f0f0;
 
 		}
 		.form-group_regist{
@@ -79,32 +110,66 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			width: 30px;
 			margin-right:10px; 
 		}
+		.user_head{
+			height: 200px;
+			width: 100%;
+			background-color: #fff; 
+			position:relative;	
+		}
+		.user_head_name{
+			bottom: 0px;
+			position:absolute;
+			left:10%;
+			bottom:10%;
+		}
+		.user_nav{
+			width: 20%;
+			height: 1000px;
+			margin-top:10px; 
+			background-color: #fff; 
+			float: left;
+			overflow: hidden;
+			margin-bottom:10px; 
+		}
+		.user_bloglist{
+			width: 100%;
+			margin-top:10px; 
+			background-color: #fff; 
+			float: left;
+			border-left:1px solid #ddd;
+			margin-bottom: 10px;
+		} 
+
 		dt{
 			float: left;
-			padding-top:20px;
-			padding-bottom:20px;
-			padding-right:35px;
-			padding-left:35px;
+			padding-right:20px;
+			padding-left:20px;
+			width: 12%;
+			height: 60%;
 		}
 		dd{
 			padding-left: 20px;
 			padding-right: 20px;
 			float: left;
 			overflow: hidden;
-			border-left: 1px solid;
-			border-color:#DEDEDE ;
 		}
 		dl{
 			overflow: hidden;
 			padding-top: 20px;
 			padding-bottom: 20px;
+
 		}
 		.blog_list_dl{
+
 			border-bottom: 0.5px solid;
 			border-color:#DEDEDE; 
 		}
-		.dl_dd_abstracts{
 
+		.dl_dd_abstracts{
+			 
+		}
+		.dl_dd_label{
+			padding-top: 20px;
 		}
 		h3{
 			margin-top:0px;
@@ -113,6 +178,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.dl_font{
 			color:gray;
 		}
+		.dl_font_label{
+			color: black;
+		}
+		.blog_list_head{
+			width: 100%;
+			height: 50%;
+			padding-bottom: 10%;
+			text-align: center;
+		}
+		.blog_list_headdiv{
+			margin:0px auto;
+			text-align: center;
+		}
+		.blog_list_headimg{
+			
+			margin:10% auto;
+			width: 70px;
+			height:70px;
+			padding-bottom: 10%;
+			text-align: center;
+			vertical-align: center;
+
+
+		}
+		.blog_list_headname{
+			display:block;
+			float:left;
+			overflow: hidden;
+			text-align: center;
+			width: 100%;
+			padding-bottom: 20%;
+		}
+		a:link {   
+			color:#999999;   
+			text-decoration: none;   
+			font-weight: normal;
+		}   
+		a:visited {   
+			color:#999999;   
+			text-decoration: none;   
+			font-weight: normal;
+		}   
+		a:hover {   
+			color:#34b0cc;   
+			text-decoration: none;   
+		} 
 	</style>
 
   </head>
@@ -161,9 +272,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			            </li>
 			          </ul>
 			        </li>
-			        <!-- 如果登陆 个人主页 未登陆 显示登陆和注册 -->
-			        <li><a href="#" data-toggle="modal" data-target="#myModal_regist">注册</a></li>
-			        <li><a href="#"  data-toggle="modal" data-target="#myModal_login">登陆</a></li>
+			        <!-- 如果登录 个人主页 未登录 显示登录和注册 -->
+			        <li class="nav_unlog" id="nav_unlog1" name="nav_unlog1"><a href="#" data-toggle="modal" >注册</a></li>
+			        <li class="nav_unlog" id="nav_unlog2" name="nav_unlog2"><a href="<%=path %>/account/login" >登录</a></li>
+			     	<li class="nav_log" id="nav_log1" name="nav_log1"><a href="#">个人主页</a></li>
+					<li class="nav_log" id="nav_log2" name="nav_log2"><a href="<%=path %>/account/logout">登出</a></li>
 			      </ul>
 
 			      <!-- 搜索 表单 -->
@@ -181,120 +294,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 
     <div class="mainbody">
-    	<!-- 滚动推荐页面 -->
-		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-		  <!-- Indicators -->
-		  <ol class="carousel-indicators">
-		    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-		    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-		  </ol>
+    	
+    	<!--  个人界面  -->
+		<div class="main_blog_body">
+			<!-- 用户名头部 -->
+			<div class="user_head">
+				
+				<div class="user_head_name">
+					<h1>${alluserblogname.username}</h1>
+				</div>
+			</div>
 
-		  <!-- Wrapper for slides -->
-		  <div class="carousel-inner" role="listbox">
-		    <div class="item active">
-		      <img src="<%=path %>/image/kotlin.jpg" alt="1 slide">
-		      <div class="carousel-caption">
-		        <h1>解读Kotlin</h1>  
-		      </div>
-		    </div>
-		    <div class="item">
-		      <img src="<%=path %>/image/swift.jpg" alt="2 slide">
-		      <div class="carousel-caption">
-		        <h1>swift开发者大会</h1> 
-		      </div>
-		    </div>
-		  </div>
 
-		  <!-- Controls -->
-		  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-		    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		    <span class="sr-only">上一页</span>
-		  </a>
-		  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-		    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		    <span class="sr-only">下一页</span>
-		  </a>
-		</div>
+			<!-- 功能区 -->
+			<div class="user_bloglist"> 
 
-		<!-- 文章目录 一页显示10条内容 -->
-		<div class="container_body">
+			<c:forEach items="${alluserblog}" var="blog" varStatus="loop"> 
+	 			<a  href="<%=path %>/blog/${blog.userId}/${blog.id}" >
+					<dl class="blog_list_dl">
+						<dd>
+							<h3>${blog.title}</h3>
+							<div class="dl_dd_abstracts">
+								<font class="dl_font">${blog.abstracts}</font>
+							</div>
+							<div class="dl_dd_label">
 
-			<dl class="blog_list_dl">
-				<dt>
-					用户名
-				</dt>
-				<dd>
-					<h3>标题</h3>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是摘要</font>
-					</div>
-				</dd>
-			</dl>
-
-			<dl class="blog_list_dl">
-				<dt>
-					用户名
-				</dt>
-				<dd>
-					<h3>标题</h3>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是灰色字体</font>
-					</div>
-				</dd>
-			</dl>
-
-			<dl class="blog_list_dl">
-				<dt>
-					用户名
-				</dt>
-				<dd>
-					<h3>标题</h3>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是灰色字体</font>
-					</div>
-				</dd>
-			</dl>
-			
-			<dl class="blog_list_dl">
-				<dt>
-					用户名
-				</dt>
-				<dd>
-					<h3>标题</h3>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是灰色字体</font>
-					</div>
-				</dd>
-			</dl>
-			
-			<dl class="blog_list_dl">
-				<dt>
-					用户名
-				</dt>
-				<dd>
-					<h3>标题</h3>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是灰色字体</font>
-					</div>
-				</dd>
-			</dl>
-
-			<dl class="blog_list_dl">
-				<dt>
-					用户名
-				</dt>
-				<dd>
-					<h3>标题</h3>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是灰色字体</font>
-					</div>
-				</dd>
-			</dl>
-
+								<span class="glyphicon glyphicon-star" aria-hidden="true"></span><font class="dl_font_label">标签</font>
+							</div>
+						</dd>
+					</dl>
+				</a>
+			</c:forEach> 
+			</div>
 		</div>
 
 		<div class="container-toolbar">
-
 			<div class="blog_write">
 				<button class="btn btn-default">
 					专家约谈
@@ -345,7 +379,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			      </div>
 			    </div>
 			    <div class="form-group_regist">
-			    	<button type="submit" class="btn btn-info">注册</button>
+			    	<button class="btn btn-info">注册</button>
 			    </div>
 			  </fieldset>
 			</form>
@@ -354,38 +388,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	</div>
 
-	    <!-- Modal 弹出登陆框 -->
-	<div class="modal fade" id="myModal_login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title modal-title-info" id="myModalLabel">登陆</h4>
-	      </div>
-	      <div class="modal-body">
-	        <form class="form-horizontal">
-			  <fieldset>
-			    <div class="form-group">
-			      <label for="inputEmail" class="col-lg-2 control-label">用户名</label>
-			      <div class="col-lg-10">
-			        <input type="text" class="form-control" id="inputUsername" placeholder="username">
-			      </div>
-			    </div>
-			    <div class="form-group">
-			      <label for="inputPassword" class="col-lg-2 control-label">密码</label>
-			      <div class="col-lg-10">
-			        <input type="text" class="form-control" id="inputPassword" placeholder="password">
-			      </div>
-			    </div>
-			    <div class="form-group_login">
-			    	<button type="submit" class="btn btn-info">登陆</button>
-			    </div>
-			  </fieldset>
-			</form>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	    <!-- Modal 弹出登录框 --> 
+<div class="modal fade" id="myModal_login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title modal-title-info" id="myModalLabel">登录</h4>
+      </div>
+      <div class="modal-body">
+        <form  method="POST"class="form-horizontal">
+		  <fieldset>
+		    <div class="form-group">
+		      <label for="inputEmail" class="col-lg-2 control-label">用户名</label>
+		      <div class="col-lg-10">
+		        <input type="text" class="form-control" id="inputUsername" placeholder="username">
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="inputPassword" class="col-lg-2 control-label">密码</label>
+		      <div class="col-lg-10">
+		        <input type="text" class="form-control" id="inputPassword" placeholder="password">
+		      </div>
+		    </div>
+		    <div class="form-group_login">
+		    	<button class="btn btn-info">登录</button>
+		    </div>
+		  </fieldset>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>  
 
   </body>
 </html>

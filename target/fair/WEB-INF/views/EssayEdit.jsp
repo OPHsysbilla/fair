@@ -193,25 +193,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    			<!-- 使用request.getParameter("editorValue");接收 editorValue -->
 	    			<h3>文章编辑内容：</h3>
 	    			<!-- 富文本编辑器 -->
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-	    			<p>hhh</p>
-
-
-
+	    			
+					
+					
 
 	    		</div>
 	    		<!-- 确认按钮 -->

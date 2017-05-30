@@ -27,8 +27,9 @@
     <mvc:resources mapping="/image/**" location="/WEB-INF/views/image/" /> 
     <mvc:resources mapping="/jquery/**" location="/WEB-INF/views/jquery/" /> 
     <mvc:resources mapping="/dist/**" location="/WEB-INF/views/dist/" />
-    <mvc:resources mapping="/blogs/**" location="/WEB-INF/views/mBlogDB/blogs/" />
-    <mvc:resources mapping="/users/**" location="/WEB-INF/views/mBlogDB/users/" />
+    <mvc:resources mapping="/ueditor/**" location="/WEB-INF/views/ueditor/" />
+    <mvc:resources mapping="/dist/**" location="/WEB-INF/views/dist/" />
+    
     <!-- 当上面要访问的静态资源不包括在上面的配置中时，则根据此配置来访问 -->
     <mvc:default-servlet-handler/>
     <!-- 开启controller注解支持 -->

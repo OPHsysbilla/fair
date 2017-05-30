@@ -19,10 +19,73 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="<%=path %>/js/instant.14757a4a.js"></script>
 
 </head>
-
-
-
 <body class="zhi ">
+<div class="index-main">
+<div class="index-main-body">
+<div class="index-header">
+
+<h1>fair</h1>
+</div>
+
+<div class="desk-front sign-flow clearfix sign-flow-simple">
+
+<div class="index-tab-navs">
+<div class="navs-slider">
+
+<a class="active">登录</a>
+<span class="navs-slider-bar"></span>
+</div>
+</div>
+
+
+<div class="view view-signin selected" data-za-module="SignInForm">
+<form action="<%=path%>/account/login" method="POST">
+	<input type="hidden" name="_xsrf" value="98af7cbfcfa2d52ee567cd5b0d1d2ed4"/>
+	<div class="group-inputs">
+
+		<div class="account input-wrapper">
+
+			<input type="text" name="username" aria-label="用户名" placeholder="用户名" required="required"/>
+		</div>
+		<div class="verification input-wrapper">
+			<input type="password" name="password" aria-label="密码" placeholder="密码" required="required" />
+		</div>
+
+		<div class="Captcha input-wrapper" data-type="cn" data-za-module="Captcha">
+
+	</div>
+	</div>
+
+	<div class="button-wrapper command">
+	<button class="sign-button submit" type="submit">登录</button>
+	</div>
+	<div >${ error }</div>
+
+</form>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+<script src="js/vendor.cb14a042.js"></script>
+<script src="https://static.zhihu.com/static/revved/-/js/closure/base.4ed4c84b.js"></script>
+
+<script src="js/common.bee7f424.js"></script>
+<script src="js/page-index.e2ea1e7f.js"></script>
+
+<meta name="entry" content="ZH.entrySignPage" data-module-id="page-index">
+
+
+<input type="hidden" name="_xsrf" value="98af7cbfcfa2d52ee567cd5b0d1d2ed4"/>
+</body>
+</html>
+
+
+<%-- <body class="zhi ">
 <div class="index-main">
 <div class="index-main-body">
 <div class="index-header">
@@ -84,5 +147,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
 <input type="hidden" name="_xsrf" value="98af7cbfcfa2d52ee567cd5b0d1d2ed4"/>
-</body>
+</body> --%>
 </html>

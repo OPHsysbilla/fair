@@ -18,7 +18,7 @@ public class Main {
 		User user = new User();
 		user.setUsername("Jerry");
 		user.setPassword("123456");
-		User.addUser(user);
+		User.addUser(user,false);
 		System.out.println(user.getFilesDir());
 	}
 }

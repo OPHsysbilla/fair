@@ -20,6 +20,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="<%=path %>/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="<%=path %>/js/jquery.mini.js"></script>
+<script type="text/javascript" src="<%=path %>/js/image.js"></script>
+<script type="text/javascript" src="<%=path %>/js/jquery.city.js"></script>
+<script type="text/javascript" src="<%=path %>/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="<%=path %>/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="<%=path %>/ueditor/lang/zh-cn/zh-cn.js"></script>
+	
 	<style type="text/css">
 		body{
 			padding-top:50px;
@@ -114,6 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	</style>
 
+	
   </head>
   <body>
     <div class="head-nav">
@@ -182,31 +190,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="mainbody">
     	<!-- 编辑模块 -->
 		<div class="editor_block">
-			<form>
+			<form action="<%=path %>/blog/${userid}/newessaypost" method="POST">
 	    		<!-- 标题 -->
 	    		<div class="title_input">
-	    				<h3>标题：</h3>
-	    				<input type="text" class="form-control input-lg" id="editor_title" placeholder="请输入标题">
+	    				<h4>标题：</h4>
+	    				<input type="text" class="form-control input-lg"  name="title"  id="editor_title" placeholder="请输入标题">
+	    		</div>
+   			    <div class="title_input">
+    				<h4>标签：</h4>
+    				<input type="text" class="form-control input-lg" name="label" id="editor_label" placeholder="用逗号,分割开每个标签">
 	    		</div>
 	    		<!-- 文本编辑器 -->
 	    		<div class="content_input">
 	    			<!-- 使用request.getParameter("editorValue");接收 editorValue -->
-	    			<h3>文章编辑内容：</h3>
 	    			<!-- 富文本编辑器 -->
-	    			
-					
-					
+	    			<table>
+						<tr>
+							<div>
+								 
+								    <h4>编写内容：</h4>
+								    <script id="editor" type="text/plain" style="width:1024px;height:640px;">
+    								</script>
+				    				<textarea id="context" name="context" style="display: none"></textarea>
+				    				
+								    <input type="submit" class="btn btn-info" value="确认提交" onclick="getContent();">
+								 
+							</div>
+						</tr>
+					</table> 
 
 	    		</div>
 	    		<!-- 确认按钮 -->
-	    		<div class="submit_input">
-
-	    			<button type="submit" class="btn btn-info">确认提交</button>
-	    		</div>
+	    		
 			</form>
     	</div>
 
-
+<!-- <div class="submit_input"> 
+  			<input type="submit" class="btn btn-info" value="确认提交" onclick="getContent();">
+  		</div> -->
 
 
 		<div class="container-toolbar">
@@ -302,6 +323,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    </div>
 	  </div>
 	</div>
-
+	<script type="text/javascript">
+		
+		    //实例化编辑器
+		    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+		    var ue = UE.getEditor('editor');
+			
+		
+		    function getContent() {
+		        var arr = [];
+		        arr.push(UE.getEditor('editor').getContent());       
+		        document.getElementById("context").value=UE.getEditor('editor').getContent();
+		    }
+		</script>
   </body>
 </html>

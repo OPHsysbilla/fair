@@ -4,6 +4,7 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
@@ -132,6 +133,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.dl_font{
 			color:gray;
 		}
+		.dl_dd_label{
+			padding-top: 20px;
+		}
 	</style>
 
   </head>
@@ -216,111 +220,64 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		<!-- 文章目录 一页显示10条内容 -->
 		<div class="container_body">
-			<dl class="blog_list_dl">
-				<dt>
-					<h3>标题</h3>
-				</dt>
-				<dd>
-					作者
-				</dd>
-				<dd>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是摘要</font>
-					</div>
-				</dd>
-
-			</dl>
-
-						<dl class="blog_list_dl">
-				<dt>
-					<h3>标题</h3>
-				</dt>
-				<dd>
-					作者
-				</dd>
-				<dd>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是摘要</font>
-					</div>
-				</dd>
-
-			</dl>
-
-			<dl class="blog_list_dl">
-				<dt>
-					<h3>标题</h3>
-				</dt>
-				<dd>
-					作者
-				</dd>
-				<dd>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是摘要</font>
-					</div>
-				</dd>
-
-			</dl>
-			<dl class="blog_list_dl">
-				<dt>
-					<h3>标题</h3>
-				</dt>
-				<dd>
-					作者
-				</dd>
-				<dd>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是摘要</font>
-					</div>
-				</dd>
-
-			</dl>
-
-			<dl class="blog_list_dl">
-				<dt>
-					<h3>标题</h3>
-				</dt>
-				<dd>
-					作者
-				</dd>
-				<dd>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是摘要</font>
-					</div>
-				</dd>
-
-			</dl>
-			<dl class="blog_list_dl">
-				<dt>
-					<h3>标题</h3>
-				</dt>
-				<dd>
-					作者
-				</dd>
-				<dd>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是摘要</font>
-					</div>
-				</dd>
-
-			</dl>
-
-			<dl class="blog_list_dl">
-				<dt>
-					<h3>标题</h3>
-				</dt>
-				<dd>
-					作者
-				</dd>
-				<dd>
-					<div class="dl_dd_abstracts">
-						<font class="dl_font">我是摘要</font>
-					</div>
-				</dd>
-
-			</dl>
-
-
+			<h6> 标签为 <strong> ${ str } </strong>的文章</h6>
+			<c:forEach items="${blogsBylabel}" var="blog" varStatus="loop"> 
+				<dl class="blog_list_dl">
+					<dt>
+						<h3>${blog.title}</h3>
+					</dt>
+					<dd>
+						作者
+					</dd>
+					<dd>
+						<div class="dl_dd_abstracts">
+							<font class="dl_font">${blog.abstract}</font>
+						</div>
+						<div>
+							<div class="dl_dd_label">
+								<span class="glyphicon glyphicon-star" aria-hidden="true"></span><font class="dl_font_label">标签</font>
+							</div>
+						</div>
+					</dd>
+	
+				</dl>
+			</c:forEach>  
 		</div>
+
+
+		<c:if test="${currentPage == 1}">
+            <span class="disabled"> 前一页</span>        
+        </c:if>
+        <c:if test="${currentPage != 1}">
+            <a href="listUser.do?page=${currentPage-1}">  前一页</a>
+        </c:if>
+        <c:if test="${currentPage == 1}">
+        <span class="current">1</span>
+        </c:if>
+        <c:if test="${currentPage != 1}">
+        <a href="listUser.do?page=1">1</a>
+        </c:if>
+        <%
+                int pageTimes = (Integer)session.getAttribute("pageTimes");
+                for(int i=1;i<pageTimes;i++)
+                {
+                    request.setAttribute("page", i+1);
+        %>            
+        <c:if test="${currentPage == page}">
+            <span class="current"><%=i+1%></span>       
+        </c:if>
+        <c:if test="${currentPage != page}">
+             <a href="listUser.do?page=<%=i+1%>"><%=i+1%></a>
+        </c:if>
+        <%} %>
+        
+        <c:if test="${currentPage == pageTimes}">
+            <span class="disabled">后一页 >></span>        
+        </c:if>
+        <c:if test="${currentPage != pageTimes}">
+        <a href="listUser.do?page=${currentPage+1}">后一页 >></a>
+        </c:if>
+
 
 		<div class="page_divide">
 			<ul class="pagination">

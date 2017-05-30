@@ -402,9 +402,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="xian" style="width:100%;margin:0 auto;padding:0 200px; border-top:1px solid #ddd" ></div>
 				<!-- 标签 -->
 				<div class="Essay_label">
+					<c:forEach items="${essayLabels}" var="label" varStatus="loop">
 					<div class="dl_dd_label">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span><font class="dl_font_label">标签</font>
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+						<font class="dl_font_label">${ label.content }</font>
 					</div>		
+					</c:forEach>
 				</div>
 				<div class="xian" style="width:100%;margin:0 auto;padding:0 200px; border-top:1px solid #ddd" ></div>
 				<!-- 内容 -->

@@ -2,6 +2,7 @@ package bean;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import database.DBQueryHelper;
 
@@ -83,6 +84,23 @@ public class Label {
 		}
   		return null; //无相关记录，返回null
 	}
-	
+	 
+	public static Label getLabelById(int id)
+	{
+		ResultSet resultSet = DBQueryHelper.executeQuery("select * from label_table where id = '" + id + "'");
+  		try {
+  			if(resultSet.next()) //有相关记录
+			{
+  				Label label = new Label();
+  				label.setId(resultSet.getInt(1));
+  				label.setContent(resultSet.getString(2));
+  				return label;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+  		return null; //无相关记录，返回null
+	}
+
 	
 }

@@ -1,9 +1,13 @@
+<%@page import="java.io.InputStreamReader"%>
+<%@page import="java.io.BufferedReader"%>
+<%@page import="java.io.FileInputStream"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
@@ -12,8 +16,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>EssayContent</title>
+
     <!-- Bootstrap -->
+
     <link rel="stylesheet" href="<%=path %>/dist/css/bootstrap.min.css">
+
+	
 	<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="<%=path %>/dist/js/bootstrap.min.js"></script>
@@ -87,7 +95,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.personal_Essay{
 			width: 100%;
 			height: 100%;
-			margin-top: 0px;
+			margin-top: 10px;
+
 		}
 		.personal_body{
 			width: 30%;
@@ -99,7 +108,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.Essay_body{
 			width: 69%;
 			float: right;
-			margin-top:0px; 
 			background-color: #fff;
 			overflow:hidden;
 			height: 100%;
@@ -112,10 +120,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			width: 100%;
 			height: 100px;
 			background-color: #fff;
+			text-align: center;
 		}
 		.Essay_label{
 			width: 100%;
-			height: 100px;
+			height: 70px;
 			background-color: #fff;
 		}
 		.Essay_container{
@@ -153,6 +162,148 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			overflow: hidden;
 			float: right;
 		}
+		.comment_body_title{
+			border-bottom: 0.5px solid;
+			border-color:#DEDEDE;
+
+		}
+		dt{
+			float: left;
+			padding-right:20px;
+			padding-left:20px;
+			width: 12%;
+			height: 60%;
+			border-right: 0.5px solid;
+			border-color:#DEDEDE;
+		}
+		dd{
+			padding-left: 20px;
+			padding-right: 20px;
+			float: left;
+			overflow: hidden;
+			border-color:#DEDEDE ;
+		}
+		dl{
+			overflow: hidden;
+			padding-top: 20px;
+			padding-bottom: 20px;
+
+		}
+		.blog_list_dl{
+			border-bottom: 0.5px solid;
+			border-color:#DEDEDE; 
+		}
+		.comment_person_title{
+			border-bottom: 0.5px solid;
+			border-color:#DEDEDE;
+		}
+
+		.dl_dd_abstracts{
+
+			 
+		}
+		.dl_dd_label{
+			padding-top: 20px;
+		}
+		h3{
+			margin-top:0px;
+			font-weight:bold;
+		}
+
+		.dl_font{
+			color:gray;
+		}
+		.dl_font_label{
+			color: black;
+		}
+		.blog_list_head{
+			width: 100%;
+			height: 50%;
+			padding-bottom: 10%;
+			text-align: center;
+		}
+		.blog_list_headdiv{
+			margin:0px auto;
+			text-align: center;
+		}
+		.blog_list_headimg{
+			
+			margin:10% auto;
+			width: 70px;
+			height:70px;
+			padding-bottom: 10%;
+			text-align: center;
+			vertical-align: center;
+		}
+		.blog_list_headname{
+			display:block;
+			float:left;
+			overflow: hidden;
+			text-align: center;
+			width: 100%;
+
+		}
+		a:link {   
+			color:#999999;   
+			text-decoration: none;   
+			font-weight: normal;
+		}   
+		a:visited {   
+			color:#999999;   
+			text-decoration: none;   
+			font-weight: normal;
+		}   
+		a:hover {   
+			color:#34b0cc;   
+			text-decoration: none;   
+		} 
+
+		.dl_dd_secondcomment{
+			float: right;
+			overflow: hidden;
+			width: 90%;
+		}
+
+		.dl_dd_firstcomment{
+			margin-bottom: 10px;
+			overflow: hidden;
+			border-bottom: 0.5px solid;
+			border-color:#DEDEDE;
+		}
+
+		.blog_person_head{
+			width: 100%;
+			height: 50%;
+			padding-bottom: 10%;
+			text-align: center;
+		}
+
+		.blog_person_headdiv{
+			margin:0px auto;
+			text-align: center;
+		}
+
+		.blog_person_headimg{
+			margin-top: 10px;
+			width: 120px;
+			height:120px;
+			text-align: center;
+			vertical-align: center;
+		}
+
+		.blog_person_headname{
+			padding-top: 20px;
+			display:block;
+			float:left;
+			overflow: hidden;
+			text-align: center;
+			width: 100%;
+
+		}
+
+
+
+
 	</style>
 
   </head>
@@ -227,64 +378,99 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 黑条 -->
 			<div class="body_header">
 			</div>
+			<!-- 博客页面个人信息 -->
 			<div class="personal_Essay">
 				<!-- 个人信息 -->
 				<div class="personal_body">
-					<p>信息</p>
+					<div class="blog_person_headdiv">
+						<a href="" class="blog_person_head">
+							<img src="" class="blog_person_headimg">	
+						</a>
+					</div>	
+					<a href="" class="blog_person_headname">
+						用户名		
+					</a>
 				</div>
 			</div>
-				<!-- 文章页面 -->
-				<div class="Essay_body">
-					<!-- 标题 -->
-					<div class="Essay_title">
-						<h1>标题</h1>
-					</div>
-					<div class="xian" style="width:100%;margin:0 auto;padding:0 200px; border-top:1px solid #ddd" ></div>
-					<!-- 标签 -->
-					<div class="Essay_label">
-						<h6>标签</h6>
-					</div>
-					<div class="xian" style="width:100%;margin:0 auto;padding:0 200px; border-top:1px solid #ddd" ></div>
-					<!-- 内容 -->
-					<div class="Essay_container">
-						<h6>内容</h6>
-						<h6>内容</h6>
-						<h6>内容</h6>
-						<h6>内容</h6>
 
-
-						<h6>内容</h6>
-						<h6>内容</h6>
-						v
-						v
-
-						<h6>内容</h6>
-						<h6>内容</h6>
-						<h6>内容</h6>
-						<h6>内容</h6>
-						v
-						v<h6>内容</h6>
-						<h6>内容</h6>
-						<h6>内容</h6>
+			<!-- 文章页面 -->
+			<div class="Essay_body">
+			<!-- 标题 -->
+				<div class="Essay_title">
+					<h1>${essay.title}</h1>
+				</div>
+				<div class="xian" style="width:100%;margin:0 auto;padding:0 200px; border-top:1px solid #ddd" ></div>
+				<!-- 标签 -->
+				<div class="Essay_label">
+					<div class="dl_dd_label">
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span><font class="dl_font_label">标签</font>
+					</div>		
+				</div>
+				<div class="xian" style="width:100%;margin:0 auto;padding:0 200px; border-top:1px solid #ddd" ></div>
+				<!-- 内容 -->
+				<div class="Essay_container"> 
+					<%-- <c:import url="${essayContent}"/>   --%>
+						${essayContent}
+						<%--  <jsp:include page="${essayContent}" flush="true" />  --%>  
+				</div>
+			</div>
+			<!-- 评论 -->
+			<div class="comment_body">
+				<div class="comment_body_title">
+					评论
+				</div>
+				<div class="dl_dd_firstcomment">
+					<c:forEach items="${essayComment}" var="comment" varStatus="loop"> 
+						<dl class="blog_list_dl"> 
+							<dt>
+								<div class="blog_list_headdiv">
+									<a href="" class="blog_list_head">
+										<img src="images/001.jpg" class="blog_list_headimg">	
+									</a>
+								</div>	
+								<a href="" class="blog_list_headname">
+									${essayCommentUser[loop.count-1].username}--${comment.time}	
+								</a>
+							</dt>
+							<dd>
+								<div class="dl_dd_abstracts">
+									<font class="dl_font">${comment.content}</font>
+								</div>
+							</dd>						
+						</dl>
+					</c:forEach> 
+					<div class="dl_dd_secondcomment">
+						<dl class="blog_list_dl">
+							<dt>
+								<a href="" class="blog_list_headname">
+									用户名		
+								</a>
+							</dt>
+							<dd>
+								<div class="dl_dd_abstracts">
+									<font class="dl_font">我是二级评论</font>
+								</div>			
+							</dd>
+						</dl>
 					</div>
 				</div>
-				<!-- 评论 -->
-				<div class="comment_body">
-					<h4>评论区</h4>
+   
+			</div>
+			<!-- 个人评论区域 -->
+			<div class="comment_person">
+				<div class="comment_person_title">
+					用户评论
 				</div>
-				<!-- 个人评论区域 -->
-				<div class="comment_person">
-					<div class="comment_person_name">
-						<h4>用户名：</h4>
-					</div>
-					<div class="comment_person_text">
-						<form>
-						<textarea class="form-control" rows="3"></textarea>
+				<div class="comment_person_name">
+					<h4>用户：${sessionuser.username}</h4>
+				</div>
+				<div class="comment_person_text"> 
+					<form action="<%=path %>/blog/${userid}/${essayid}?method=addComment" method="post">
+						<textarea class="form-control" name="comment" rows="3"></textarea>
 						<button class="btn btn-info" aligin="right">提交</button>
-						</form>
-					</div>
+					</form>
 				</div>
-			
+			</div>
 		</div>
 
 

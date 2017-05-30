@@ -26,27 +26,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="<%=path %>/dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		window.onload=function(){  
-			  var div1=document.getElementById("nav_log1");  
-			  var div2=document.getElementById("nav_log2");  
-			  var div3=document.getElementById("nav_unlog1");  
-			  var div4=document.getElementById("nav_unlog2");  
+			  var div1log=document.getElementById("nav_log1");  
+			  var div2log=document.getElementById("nav_log2");  
+			  var div3unlog=document.getElementById("nav_unlog1");  
+			  var div4unlog=document.getElementById("nav_unlog2");  
 
 			  var sbtitle ='<%=session.getAttribute("sessionuser")%>';
-			  
 			  alert(sbtitle);
-			  
-			  if(sbtitle){
-				  	div1.style.display='block';
-				  	div2.style.display='block';
-				  	div3.style.display='none';
-				  	div4.style.display='none';
-				  	
+			  if(sbtitle=="null"){ 
+				  	div1log.style.display='none';
+				  	div2log.style.display='none';
+					div3unlog.style.display='block';
+				  	div4unlog.style.display='block';
 				  }
-				if(!sbtitle){
-					div3.style.display='block';
-				  	div4.style.display='block';
-				  	div1.style.display='none';
-				  	div2.style.display='none';
+			  if(sbtitle!="null"){
+				    div1log.style.display='block';
+				  	div2log.style.display='block';
+				  	div3unlog.style.display='none';
+				  	div4unlog.style.display='none';
 				  }
 		};
 	</script>
@@ -68,6 +65,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.carousel .border-image-repeat: {
 			width:100%;
 			background-color: #000;
+		}
+		.page_divide{
+			margin-left: 50%; 
 		}
 		.container-toolbar { 
 			position:fixed; 
@@ -224,6 +224,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			color:#34b0cc;   
 			text-decoration: none;   
 		} 
+
 	</style>
 
   </head>
@@ -265,18 +266,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			        <li class="dropdown">
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">写博客 <span class="caret"></span></a>
 			          <ul class="dropdown-menu">
-			            <li><a href="#">写博客</a></li>
+			            <li><a href="<%=path %>/blog/${userid}/newessay">写博客</a></li>
 			            <li role="separator" class="divider"></li>    
 			            <li>
-			            <li><a href="#">上传资源</a></li>
+			            <li><a href="<%=path %>/file/${userid}">上传资源</a></li>  
 			            </li>
 			          </ul>
 			        </li>
-			        <!-- 如果登录 个人主页 未登录 显示登录和注册 -->
-			        <li class="nav_unlog" id="nav_unlog1" name="nav_unlog1"><a href="#" data-toggle="modal" >注册</a></li>
-			        <li class="nav_unlog" id="nav_unlog2" name="nav_unlog2"><a href="<%=path %>/account/login" >登录</a></li>
+			        <!-- 如果登录 个人主页 未登录 显示登录和注册 --> 
 			     	<li class="nav_log" id="nav_log1" name="nav_log1"><a href="#">个人主页</a></li>
 					<li class="nav_log" id="nav_log2" name="nav_log2"><a href="<%=path %>/account/logout">登出</a></li>
+
+			        <li class="nav_unlog" id="nav_unlog1" name="nav_unlog1"><a href="#" data-toggle="modal" data-target="#myModal_regist">注册</a></li>
+			        <li class="nav_unlog" id="nav_unlog2" name="nav_unlog2"><a href="#"  data-toggle="modal" data-target="#myModal_login">登录</a></li>
 			      </ul>
 
 			      <!-- 搜索 表单 -->
@@ -307,28 +309,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
 			<!-- 功能区 -->
-			<div class="user_bloglist"> 
-
-			<c:forEach items="${alluserblog}" var="blog" varStatus="loop"> 
-	 			<a  href="<%=path %>/blog/${blog.userId}/${blog.id}" >
-					<dl class="blog_list_dl">
-						<dd>
-							<h3>${blog.title}</h3>
-							<div class="dl_dd_abstracts">
-								<font class="dl_font">${blog.abstracts}</font>
-							</div>
-							<div class="dl_dd_label">
-
-								<span class="glyphicon glyphicon-star" aria-hidden="true"></span><font class="dl_font_label">标签</font>
-							</div>
-						</dd>
-					</dl>
-				</a>
-			</c:forEach> 
+			<div class="user_bloglist">
+				<c:forEach items="${alluserblog}" var="blog" varStatus="loop"> 
+		 			<a  href="<%=path %>/blog/${blog.userId}/${blog.id}" >
+						<dl class="blog_list_dl">
+							<dd>
+								<h3>${blog.title}</h3>
+								<div class="dl_dd_abstracts">
+									<font class="dl_font">${blog.abstracts}</font>
+								</div>
+								<!--   标签
+								<div class="dl_dd_label">
+									<span class="glyphicon glyphicon-star" aria-hidden="true">
+									</span>
+									<font class="dl_font_label">标签</font>
+								</div> 
+								-->
+							</dd>
+						</dl>
+					</a>
+				</c:forEach>  
+			</div> 
+			
+			<div class="page_divide">
+				<ul class="pagination">
+				  <li class="disabled"><a href="#">&laquo;</a></li>
+				  <li class="active"><a href="#">1</a></li>
+				  <li><a href="#">2</a></li>
+				  <li><a href="#">3</a></li>
+				  <li><a href="#">4</a></li>
+				  <li><a href="#">5</a></li>
+				  <li><a href="#">&raquo;</a></li>
+				</ul>
 			</div>
+
+			
+			
 		</div>
 
+
+
+
+
 		<div class="container-toolbar">
+
 			<div class="blog_write">
 				<button class="btn btn-default">
 					专家约谈
@@ -388,38 +412,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	</div>
 
-	    <!-- Modal 弹出登录框 --> 
-<div class="modal fade" id="myModal_login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title modal-title-info" id="myModalLabel">登录</h4>
-      </div>
-      <div class="modal-body">
-        <form  method="POST"class="form-horizontal">
-		  <fieldset>
-		    <div class="form-group">
-		      <label for="inputEmail" class="col-lg-2 control-label">用户名</label>
-		      <div class="col-lg-10">
-		        <input type="text" class="form-control" id="inputUsername" placeholder="username">
-		      </div>
-		    </div>
-		    <div class="form-group">
-		      <label for="inputPassword" class="col-lg-2 control-label">密码</label>
-		      <div class="col-lg-10">
-		        <input type="text" class="form-control" id="inputPassword" placeholder="password">
-		      </div>
-		    </div>
-		    <div class="form-group_login">
-		    	<button class="btn btn-info">登录</button>
-		    </div>
-		  </fieldset>
-		</form>
-      </div>
-    </div>
-  </div>
-</div>  
+	    <!-- Modal 弹出登录框 -->
+	<div class="modal fade" id="myModal_login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title modal-title-info" id="myModalLabel">登录</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal" action="<%=path%>/account/login" method="post" >
+			  <fieldset>
+			    <div class="form-group">
+			      <label for="inputEmail" class="col-lg-2 control-label">用户名</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" name="username" id="inputUsername" placeholder="用户">
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <label for="inputPassword" class="col-lg-2 control-label">密码</label>
+			      <div class="col-lg-10">
+			        <input type="text" class="form-control" name="password" id="inputPassword" placeholder="密码">
+			      </div>
+			    </div>
+			    <div class="form-group_login">
+			    	<button class="btn btn-info" type="submit">登录</button>
+			    </div>
+			  </fieldset>
+			</form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
   </body>
 </html>

@@ -1,18 +1,22 @@
 package bean;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.RandomAccessFile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import database.DBQueryHelper;
+import database.MyEnviroment;
 
 public class User{
 	private int id;
 	private String username;
 	private String password;
 	private int authority;
-	
+	private final static String HEADPORTRAITFILENAME = "head_portrait.png";
 	
 	public User()
 	{
@@ -89,17 +93,35 @@ public class User{
 	}
 	
 	
-	public static boolean addUser(User user)
+	public static boolean addUser(User user, boolean isHeadProtraitUploaded)
 	{
 		String sqlInsert = "insert into user_table values(" 
 				+ "NULL" + ",'" 
 				+ user.getUsername() + "','" 
 				+ user.getPassword() + "','"
 				+ 0 + "')";
-		File mainPath = new File("E:/mBlogDB/users/" + user.getUsername());
+		File mainPath = new File(MyEnviroment.USERSPATH + user.getUsername());
 		mainPath.mkdir();
-		File filesPath = new File("E:/mBlogDB/users/" + user.getUsername() + "/files");
+		File filesPath = new File(MyEnviroment.USERSPATH + user.getUsername() + "/files");
 		filesPath.mkdir();
+		if(!isHeadProtraitUploaded)
+		{
+			try {
+				RandomAccessFile originalRaf = new RandomAccessFile(MyEnviroment.ROOTPATH
+						 + "default_headportrait.png", "r");
+				FileOutputStream targetFos = new FileOutputStream(user.getHeadPortraitPath(), false);
+				int size = 0;
+				byte[] buffer = new byte[1048576];
+				while( (size = originalRaf.read(buffer, 0, 1048576)) != -1)
+				{
+					targetFos.write(buffer, 0, size);
+				}
+				targetFos.close();
+				originalRaf.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return DBQueryHelper.executeUpdate(sqlInsert);
 	}
 	
@@ -152,13 +174,13 @@ public class User{
 	
 	public String getMainDirPath()
 	{
-		return "E:/mBlogDB/users/" + this.getUsername();
+		return MyEnviroment.USERSPATH + this.getUsername();
 	}
 	
 	
 	public String getHeadPortraitPath()
 	{
-		return this.getMainDirPath() + "/head_portrait.png";
+		return this.getMainDirPath() + "/" + HEADPORTRAITFILENAME;
 	}
 	
 	

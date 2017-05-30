@@ -12,9 +12,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.demo.web.auth.AuthPassport;
 import com.demo.web.models.AccountModel;
  
-@Controller
-@RequestMapping(value = "/helloworld")
+@Controller 
 public class HelloWorldController { 
+	@RequestMapping(value={"/miao"})
+	public String miao(HttpServletRequest request, Model model){ 
+		
+	    return "miao";
+	}
+ 
 	@AuthPassport
 	@RequestMapping(value={"/index"})
 	public String index(HttpServletRequest request, Model model){

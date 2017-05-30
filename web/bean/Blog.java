@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import database.DBQueryHelper;
 import database.MyEnviroment;
@@ -25,12 +27,22 @@ public class Blog{
 	public final static int MAINID = 0;
 	public final static int USERID = 1;
 
-	
+	static String pattern = "<p>([^</p>]*)";
+	public static String getAbstracts(String data){
+		Pattern t = Pattern.compile(pattern);
+		Matcher m = t.matcher(data);
+		if(m.find()){
+			return m.group(1);
+		}
+		else 
+			return "";
+	}
 	
 	public Blog()
 	{
 		
 	}
+	
 	
 	public String getContent()
 	{
@@ -256,5 +268,27 @@ public class Blog{
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	
+	public static Blog[] searchLatestedNBlogs(int num)
+	{
+		ArrayList<Blog> listBlogs = new ArrayList<Blog>();
+		ResultSet resultSet = DBQueryHelper.executeQuery(
+				"SELECT * FROM blog_table ORDER BY blog_table.id DESC LIMIT " + num);
+  		try {
+			while(resultSet.next())
+			{
+				Blog blog = new Blog();
+				blog.setId(resultSet.getInt(1));
+				blog.setUserID(resultSet.getInt(2));
+				blog.setDirPath(resultSet.getString(3));
+				blog.setTitle(resultSet.getString(4));
+				blog.setAbstracts(resultSet.getString(5));
+				blog.setTime(resultSet.getString(6));
+				listBlogs.add(blog);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+  		return (Blog[])listBlogs.toArray(new Blog[listBlogs.size()]);
+	}
+
 }

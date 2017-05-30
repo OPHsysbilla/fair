@@ -190,9 +190,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			      </ul>
 
 			      <!-- 搜索 表单 -->
-			      <form class="navbar-form navbar-right" action="#">
+			      <form class="navbar-form navbar-right" action="<%=path%>/searchget?curpage=${curpage}" method="GET">
 			        <div class="form-group">
-			          <input type="text" class="form-control" placeholder="Search">
+			          <input type="text" class="form-control" placeholder="请输入搜索内容" value="${ searchstr }" name="searchstr">
 			        </div>
 			        <button type="submit" class="btn btn-info btn-search">搜索</button>
 			      </form>
@@ -205,12 +205,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <div class="mainbody">
     	
-
+ 
+			          
     	<div class="searchblock">
-    		<form class="form">
+    		<form class="form" action="<%=path%>/searchget?curpage=${curpage}" method="GET">
     			<div class="search_input">
-	    			<input type="text" class="form-control input-lg" id="Search" placeholder="请输入搜索内容">
-	    		</div>	
+	    			<input type="text" class="form-control input-lg" id="Search" placeholder="请输入搜索内容" value="${ searchstr }" name="searchstr">
+	    		</div>	 
 	    		<div class="Search_btn">
 	    			<button type="submit" class="btn btn-danger btn-lg btn-form-search">搜索</button> 
 	    		</div>	
@@ -220,8 +221,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		<!-- 文章目录 一页显示10条内容 -->
 		<div class="container_body">
-			<h6> 标签为 <strong> ${ str } </strong>的文章</h6>
-			<c:forEach items="${blogsBylabel}" var="blog" varStatus="loop"> 
+			<h6> 标签为 <strong> ${ searchstr } </strong>的文章</h6>
+			${blogByTitle[0].title}
+			<c:forEach items="${blogsByTitle}" var="blog" varStatus="loop"> 
 				<dl class="blog_list_dl">
 					<dt>
 						<h3>${blog.title}</h3>
@@ -231,7 +233,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</dd>
 					<dd>
 						<div class="dl_dd_abstracts">
-							<font class="dl_font">${blog.abstract}</font>
+							<font class="dl_font">${blog.abstracts}</font>
 						</div>
 						<div>
 							<div class="dl_dd_label">
@@ -244,7 +246,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</c:forEach>  
 		</div>
 
-
+<%-- 
 		<c:if test="${currentPage == 1}">
             <span class="disabled"> 前一页</span>        
         </c:if>
@@ -277,17 +279,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <c:if test="${currentPage != pageTimes}">
         <a href="listUser.do?page=${currentPage+1}">后一页 >></a>
         </c:if>
-
-
+ --%> 
 		<div class="page_divide">
-			<ul class="pagination">
-			  <li class="disabled"><a href="#">&laquo;</a></li>
-			  <li class="active"><a href="#">1</a></li>
-			  <li><a href="#">2</a></li>
-			  <li><a href="#">3</a></li>
-			  <li><a href="#">4</a></li>
-			  <li><a href="#">5</a></li>
-			  <li><a href="#">&raquo;</a></li>
+			<ul class="pagination">   
+	        <c:choose>
+               <c:when test="${curpage==1}">
+                  <li class='disabled'><a href='#'>&laquo;</a></li>
+               </c:when>
+               <c:otherwise>
+                   <li class='active'><a href='?curpage=${curpage-1}&searchstr=${searchstr}'>&laquo;</a></li>
+                   <li class='active'><a href='#'>…</a></li>
+               </c:otherwise>
+            </c:choose>
+            <c:forEach varStatus="i" begin="1" end="${sumpage}">
+                 <c:choose>
+                    <c:when test="${curpage==i.count}">
+                       <li class='disabled'><a href='#'>${i.count}</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li  class='active'><a href='?curpage=${i.count}&searchstr=${searchstr}'>${i.count}</a></li>
+                    </c:otherwise>
+                 </c:choose>
+            </c:forEach>
+	        <c:choose>
+               <c:when test="${curpage==sumpage}">
+                  <li class='disabled'><a href='#'>&raquo;</a></li>
+               </c:when>
+               <c:otherwise>
+		       		<li class='active'><a href='#'>…</a></li>
+		            <li><a href='?curpage=${curpage+1}&searchstr=${searchstr}'>&raquo;</a></li> 
+               </c:otherwise>
+            </c:choose>
+	            
+				<%-- <li class="disabled"><a href="#">&laquo;</a></li> 
+				<c:forEach items="${cur}" var="blog" varStatus="loop">
+				    <li><a href="<%=path%>/search?curpage=${curpage}">5</a></li>
+				</c:forEach>	
+			    <li class="active"><a href="#" >${curpage+1}</a></li>
+			    <c:forEach items="${cur}" var="blog" varStatus="loop">
+					 <li><a href="#">2</a></li> 
+				</c:forEach>
+				<li><a href="#">&raquo;</a></li> --%>
 			</ul>
 		</div>
 

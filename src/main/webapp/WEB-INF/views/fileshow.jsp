@@ -26,10 +26,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body> 
   	<c:forEach items="${paths}" var="path" varStatus="loop"> 
     	 <br>
-   		<a href= "/fair/download?filePath=${path}" >${pathnames[loop.count-1]}</a>
+   		<a href= "<%=path%>/download?filePath=${path}" >${pathnames[loop.count-1]}</a>
      </c:forEach> 
      <br>
-     <a href= "/fair/uploadfile/${userid}" >上传文件</a>
+     <a href= "<%=path%>/uploadfile/${userid}" >上传文件</a>
   </body>
 </html>
 <%--      <c:forEach items="${paths}" var="path" varStatus="loop"> 
